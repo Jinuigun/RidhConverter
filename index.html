@@ -170,7 +170,7 @@
                 { latin: 'F f', cyrillic: 'Ф ф', input: 'f' },
                 { latin: 'G g', cyrillic: 'Г г', input: 'g' },
                 { latin: 'Ǥ ǥ', cyrillic: 'Ғ ғ', input: 'gh' },
-                { latin: 'Ħ ħ', cyrillic: 'Һ һ', input: 'hh' },
+                { latin: 'Ħ ħ', cyrillic: 'Һ һ', input: 'h' },
                 { latin: 'I i', cyrillic: 'И и', input: 'i' },
                 { latin: 'Ī ī', cyrillic: 'ИИ ии', input: 'ii' },
                 { latin: 'J j', cyrillic: 'Й й', input: 'j' },
@@ -232,7 +232,7 @@
                  { latin: 'Ī ī', cyrillic: 'ИИ ии', input: 'ī' },
                  { latin: 'Ū ū', cyrillic: 'Уу уу', input: 'ū' },
                 { latin: 'Ħ ħ', cyrillic: 'Һ һ', input: 'ħ' },
-                
+
 
             ];
 
@@ -263,7 +263,7 @@
             orderedKeys.forEach(item => {
                 const cyrillicOutput = item.cyrillic;
                 
-                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`, `ts`, `tz`].includes(item.input);
+                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`, `ts`, `tz`].includes(item.input);
                 
                 if (isSpecial) {
                     renderKey(item.latin, item.input, cyrillicOutput, true);
