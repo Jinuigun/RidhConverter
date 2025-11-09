@@ -41,9 +41,13 @@
             }
         }
         const RĪÐMAL_MAP = new Map([
+            // ---special case cuz its weird
             ["uue", "ӱӱ"], // Ǖ ǖ
             
             //Digraphs/Trigraphs (Consonants and Long Vowels) ---
+            ["ts", "ц"]
+            ["tz", "ц"]
+            
             // Vowels
             ["aa", "аа"], ["ee", "ее"], ["ii", "ии"], ["oo", "оо"], ["uu", "уу"],
             
@@ -52,7 +56,7 @@
             ["th", "ҫ"],   // Þ þ
             ["gh", "ғ"],   // Ǥ ǥ
             ["hh", "һ"],   // Ħ ħ
-            ["hw", "ꚕ"],   // Ƕ ƕ
+            ["hw", "ꚕ"],   // Ƕ ƕ or Hv hv
             ["ch", "ч"],   // Č č
             ["dz", "ӡ"],   // Dz dz
             ["sh", "ш"],   // Š š
@@ -64,8 +68,8 @@
             ["lh", "ль"],   // Ꝇ
             ["ny", "нь"],   // Ꞥ)
             ["ax", "ъ"],   // Ә
-            ["eh", "э"],
-            ["aw", "ѡ"],
+            ["eh", "э"], // ɛ
+            ["aw", "ѡ"], //ɔ
 
             // ---Vowels
             ["a", "а"], ["e", "е"], ["i", "и"], ["o", "о"], ["u", "у"], ["y", "ы"],
@@ -76,7 +80,8 @@
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
-            
+
+            // ---quote mearkers
             ["oq", "«"], 
             ["cq", "»"],
         ]);
@@ -175,7 +180,8 @@
                 { latin: 'ɔ (/aw/)', cyrillic: 'Ѡ ѡ', input: 'aw' },
                 { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'oq' },
                 { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'cq' },
-
+                { latin: 'tz', cyrillic: 'ц', input: 'tz' },
+                { latin: 'ts', cyrillic: 'ц', input: 'ts' },
             ];
 
             const renderKey = (label, input, output, isSpecial = false) => {
@@ -205,7 +211,7 @@
             orderedKeys.forEach(item => {
                 const cyrillicOutput = item.cyrillic;
                 
-                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`].includes(item.input);
+                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`, `ts`, `tz`].includes(item.input);
                 
                 if (isSpecial) {
                     renderKey(item.latin, item.input, cyrillicOutput, true);
@@ -223,7 +229,7 @@
             Rīðmal Latin-to-Cyrillic Transcriber (Version 2.0)
         </h1>
         <p class="text-secondary-gray mb-6">
-            This transcriber uses the <span class="text-primary-blue font-semibold">ASCII inputs provided in the key</span> for all letters with diacritics (e.g., 'ch' for Č) to make typing easier.
+            This transcriber uses the ASCII inputs provided in the key for all letters with diacritics (e.g., 'ch' for Č) to make typing easier.
         </p>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
