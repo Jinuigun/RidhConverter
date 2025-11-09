@@ -117,32 +117,52 @@
             const input = document.getElementById('latinInput').value; 
             let cyrillicOutput = '';
             let i = 0;
+            let isInsideQuote = false; // State tracker for quotation marks
 
             while (i < input.length) {
                 let foundMatch = false;
 
-                for (let len = 3; len >= 1; len--) {
-                    const segment = input.substring(i, i + len);
-                    const lowerSegment = segment.toLowerCase();
-                    
-                    if (RĪÐMAL_MAP.has(lowerSegment)) {
-                        let cyrillic = RĪÐMAL_MAP.get(lowerSegment);
+                // 1. Handle special quote character '|' (Pipe)
+                if (input[i] === '|') {
+                    if (isInsideQuote) {
+                        cyrillicOutput += '»'; // Closing quote (even number)
+                        isInsideQuote = false;
+                    } else {
+                        cyrillicOutput += '«'; // Opening quote (odd number)
+                        isInsideQuote = true;
+                    }
+                    i++;
+                    foundMatch = true;
+                }
+                
+                if (!foundMatch) {
+                    // 2. Check for standard character conversions (longest match first)
+                    for (let len = 3; len >= 1; len--) {
+                        const segment = input.substring(i, i + len);
+                        const lowerSegment = segment.toLowerCase();
                         
-                        const firstChar = segment.charAt(0);
-                        const isFirstCharCased = (firstChar !== firstChar.toLowerCase()); // Check if it's a letter and is uppercase
+                        if (RĪÐMAL_MAP.has(lowerSegment)) {
+                            let cyrillic = RĪÐMAL_MAP.get(lowerSegment);
+                            
+                            // Casing Logic: Check if the first character of the Latin input was uppercase
+                            const firstChar = segment.charAt(0);
+                            const isFirstCharCased = (firstChar !== firstChar.toLowerCase()); 
 
-                        if (isFirstCharCased) {
-                            cyrillic = cyrillic.charAt(0).toUpperCase() + cyrillic.slice(1);
+                            if (isFirstCharCased) {
+                                // Apply capitalization to the first letter of the Cyrillic output
+                                cyrillic = cyrillic.charAt(0).toUpperCase() + cyrillic.slice(1);
+                            }
+
+                            cyrillicOutput += cyrillic;
+                            i += len;
+                            foundMatch = true;
+                            break;
                         }
-
-                        cyrillicOutput += cyrillic;
-                        i += len;
-                        foundMatch = true;
-                        break;
                     }
                 }
 
                 if (!foundMatch) {
+                    // 3. Fallback: Copy character directly (punctuation, spaces, numbers, etc.)
                     cyrillicOutput += input[i];
                     i++;
                 }
@@ -246,6 +266,17 @@
                 `;
                 keyList.appendChild(div);
             };
+
+            const quoteRule = document.createElement('div');
+            quoteRule.className = 'key-pair bg-green-900/50 rounded-lg p-2 mt-4 mb-4 font-semibold border-green-700 border';
+            quoteRule.innerHTML = `
+                <span class="text-green-400">Guillemet Rule</span>
+                <div class="flex items-center space-x-4">
+                    <span class="font-mono text-white text-sm bg-green-700 px-2 py-1 rounded">| (Pipe)</span>
+                    <span class="font-bold text-xl text-yellow-300">« »</span>
+                </div>
+            `;
+            keyList.appendChild(quoteRule);
 
             const specialHeader = document.createElement('div');
             specialHeader.className = 'text-center text-primary-blue mt-4 mb-2 font-semibold';
