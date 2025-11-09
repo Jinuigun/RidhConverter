@@ -76,7 +76,7 @@
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
-            ["oq", "«"], ["cq", "»"], ["tz", "ц"], ["ts", "ц"]
+            ["oq", "«"], ["cq", "»"], ["tz", "ц"], ["ts", "ц"], ["ß", "сс"], ["ö", "ө"], ["ä", "э"], ["ü", "ӱ"]
         ]);
 
         function convertText() {
@@ -175,6 +175,9 @@
                 { latin: 'Close-Quote (cq)', cyrillic: '»', input: 'cq' },
                 { latin: 'TS ts', cyrillic: 'Ц ц', input: 'ts' },
                 { latin: 'TZ tz', cyrillic: 'Ц ц', input: 'tz' },
+                { latin: 'Ä ä', cyrillic: 'Э э', input: 'ä' },
+                { latin: 'Ö ö', cyrillic: 'Ө ө', input: 'ö' },
+                { latin: 'Ü ü', cyrillic: 'Ӱ ӱ', input: 'ü' },
             ];
 
             const renderKey = (label, input, output, isSpecial = false) => {
