@@ -76,6 +76,7 @@
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
+            ["OQ", "«"], ["CQ", "»"]
         ]);
 
         function convertText() {
@@ -168,8 +169,11 @@
                 { latin: 'Ʒ ʒ', cyrillic: 'Џ џ', input: 'jzh' },
                 { latin: 'Ә ə', cyrillic: 'Ъ ъ', input: 'ax' },
                 { latin: 'W w', cyrillic: 'В в', input: 'w' },
-                { latin: 'N/A', cyrillic: 'Э э', input: 'eh' },
-                { latin: 'N/A', cyrillic: 'Ѡ ѡ', input: 'aw' },
+                { latin: 'ɛ (/eh/)', cyrillic: 'Э э', input: 'eh' },
+                { latin: 'ɔ (/aw/)', cyrillic: 'Ѡ ѡ', input: 'aw' },
+                { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'OQ' },
+                { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'CQ' },
+
             ];
 
             const renderKey = (label, input, output, isSpecial = false) => {
