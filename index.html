@@ -203,7 +203,7 @@
             orderedKeys.forEach(item => {
                 const cyrillicOutput = item.cyrillic;
                 
-                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue'].includes(item.input);
+                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`].includes(item.input);
                 
                 if (isSpecial) {
                     renderKey(item.latin, item.input, cyrillicOutput, true);
