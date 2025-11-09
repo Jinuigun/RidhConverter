@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рииҙмал (Rīðmal Latin-to-Cyrillic Converter</title>
+    <title>Рииҙмал/Rīðmal Latin Converter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -76,7 +76,9 @@
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
-            ["OQ", "«"], ["CQ", "»"]
+            
+            ["oq", "«"], 
+            ["cq", "»"],
         ]);
 
         function convertText() {
@@ -171,8 +173,8 @@
                 { latin: 'W w', cyrillic: 'В в', input: 'w' },
                 { latin: 'ɛ (/eh/)', cyrillic: 'Э э', input: 'eh' },
                 { latin: 'ɔ (/aw/)', cyrillic: 'Ѡ ѡ', input: 'aw' },
-                { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'OQ' },
-                { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'CQ' },
+                { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'oq' },
+                { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'cq' },
 
             ];
 
@@ -192,12 +194,12 @@
 
             const specialHeader = document.createElement('div');
             specialHeader.className = 'text-center text-primary-blue mt-4 mb-2 font-semibold';
-            specialHeader.textContent = 'Special Letters / Compounds';
+            specialHeader.textContent = '';
             keyList.appendChild(specialHeader);
 
             const simpleHeader = document.createElement('div');
             simpleHeader.className = 'text-center text-primary-blue mt-6 mb-2 font-semibold';
-            simpleHeader.textContent = 'Simple Letters / Long Vowels';
+            simpleHeader.textContent = '';
             keyList.appendChild(simpleHeader);
 
             orderedKeys.forEach(item => {
@@ -246,7 +248,7 @@
 
             <div class="lg:col-span-1 bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700">
                 <h2 class="text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">
-                    Conversion Key (Latin Character to ASCII Input to Cyrillic)
+                    Conversion Key (Latin Characters in Rīðmal Cyrillic)
                 </h2>
                 <div id="conversionKeyList" class="text-sm">
                 </div>
