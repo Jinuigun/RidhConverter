@@ -40,56 +40,58 @@
                 }
             }
         }
+        
+        // RĪÐMAL_MAP: Kept in original order (longest match first) to ensure correct conversion logic.
         const RĪÐMAL_MAP = new Map([
+            // Trigraphs/Unicode (Highest priority)
             ["uue", "ӱӱ"], // Ǖ ǖ
-            ["ǖ", "ӱӱ"], //no way anyone has this unicoded 😭
-            
-            //Digraphs/Trigraphs (Consonants and Long Vowels) ---
+            ["ǖ", "ӱӱ"], 
+
+            // Digraphs/Long Vowels/Special Consonants
             // Vowels
             ["aa", "аа"], ["ee", "ее"], ["ii", "ии"], ["oo", "оо"], ["uu", "уу"],
-            ["ā", "аа"], ["ē", "ее"], ["ī", "ии"], ["ō", "оо"], ["ü", "уу"],
+            ["ā", "аа"], ["ē", "ее"], ["ī", "ии"], ["ō", "оо"], ["ü", "уу"], // Note: 'ü' maps to long U 'уу' in this map.
 
             // Fricatives/Stops/Affricates
-            ["dh", "ҙ"],   // Ð ð
+            ["dh", "ҙ"],   // Ð ð
             ["ð", "ҙ"],
 
-            ["th", "ҫ"],   // Þ þ
+            ["th", "ҫ"],   // Þ þ
             ["þ", "ҫ"],
 
-            ["gh", "ғ"],   // Ǥ ǥ
+            ["gh", "ғ"],   // Ǥ ǥ
             ["ǥ", "ғ"],
 
-            ["ħ", "һ"],   // Ħ ħ
+            ["ħ", "һ"],   // Ħ ħ
             ["h", "һ"],
 
-            ["hw", "ꚕ"],   // Ƕ ƕ
+            ["hw", "ꚕ"],   // Ƕ ƕ
             ["ƕ", "ꚕ"],
 
-            ["ch", "ч"],   // Č č
+            ["ch", "ч"],   // Č č
             ["č", "ч"],
 
-            ["dz", "ӡ"],   // Dz dz
+            ["dz", "ӡ"],   // Dz dz
             
-            ["sh", "ш"],   // Š š
+            ["sh", "ш"],   // Š š
             ["š", "ш"],
 
-            ["zh", "ж"],   // Ž ž
+            ["zh", "ж"],   // Ž ž
             ["ž", "ж"],
 
-            ["jzh", "џ"],  // Ʒ ʒ
+            ["jzh", "џ"],  // Ʒ ʒ
             
             // Nasals/Laterals/Schwa
-
-            ["ng", "ҥ"],   // Ꞑ
+            ["ng", "ҥ"],   // Ꞑ
             ["ꞑ", "ҥ"],
             
             ["ꝇ", "л"], //ɮ
             ["lh", "л"],
 
-            ["ny", "нь"],   // Ꞥ
+            ["ny", "нь"],   // Ꞥ
             ["ꞥ", "нь"],
 
-            ["ax", "ъ"],   // Ә
+            ["ax", "ъ"],   // Ә
             ["ə", "ъ"],
 
             ["eh", "э"],
@@ -99,14 +101,14 @@
             ["aw", "ѡ"],
 
 
-            // ---Vowels
+            // ---Vowels (Short)
             ["a", "а"], ["e", "е"], ["i", "и"], ["o", "о"], ["u", "у"], ["y", "ы"],
-            ["ue", "ӱ"], // Ü ü
+            ["ue", "ӱ"], // Ü ü (Short/simple Ü)
             ["ü", "ӱ"],
             ["oe", "ө"], // Ö ö
             ["ö", "ө"], 
             
-            // ---Consonants
+            // ---Consonants (Simple)
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "ль"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
@@ -171,100 +173,96 @@
             document.getElementById('cyrillicOutput').value = cyrillicOutput;
         }
 
+        // Key lists structured for display (Vowels then Consonants)
+        const VOWEL_KEYS = [
+            // Short Vowels
+            { latin: 'A a', cyrillic: 'А а', input: 'a' },
+            { latin: 'E e', cyrillic: 'Е е', input: 'e' },
+            { latin: 'I i', cyrillic: 'И и', input: 'i' },
+            { latin: 'O o', cyrillic: 'О о', input: 'o' },
+            { latin: 'U u', cyrillic: 'У у', input: 'u' },
+            { latin: 'Y y', cyrillic: 'Ы ы', input: 'y' },
+
+            // Long Vowels (Input: Digraph / Macron)
+            { latin: 'Ā ā (aa)', cyrillic: 'АА аа', input: 'aa' },
+            { latin: 'Ē ē (ee)', cyrillic: 'ЕЕ ее', input: 'ee' },
+            { latin: 'Ī ī (ii)', cyrillic: 'ИИ ии', input: 'ii' },
+            { latin: 'Ō ō (oo)', cyrillic: 'Оо оо', input: 'oo' },
+            { latin: 'Ū ū (uu)', cyrillic: 'Уу уу', input: 'uu' },
+
+            // Special Vowels (Input: Diacritics / ASCII substitute)
+            { latin: 'Ä ä / eh', cyrillic: 'Э э', input: 'eh' },
+            { latin: 'Ö ö / oe', cyrillic: 'Ө ө', input: 'oe' },
+            { latin: 'Ü ü / ue', cyrillic: 'Ӳ ӱ', input: 'ue' },
+            { latin: 'Ǖ ǖ / uue', cyrillic: 'ӲӲ ӳӳ', input: 'uue' },
+            { latin: 'Å å / aw', cyrillic: 'Ѡ ѡ', input: 'aw' },
+            { latin: 'Ə ə / ax', cyrillic: 'Ъ ъ', input: 'ax' },
+        ];
+
+        const CONSONANT_KEYS = [
+            // Simple Consonants
+            { latin: 'B b', cyrillic: 'Б б', input: 'b' },
+            { latin: 'C c / ts / tz', cyrillic: 'Ц ц', input: 'c' },
+            { latin: 'D d', cyrillic: 'Д д', input: 'd' },
+            { latin: 'F f', cyrillic: 'Ф ф', input: 'f' },
+            { latin: 'G g', cyrillic: 'Г г', input: 'g' },
+            { latin: 'J j', cyrillic: 'Й й', input: 'j' },
+            { latin: 'K k', cyrillic: 'К к', input: 'k' },
+            { latin: 'L l', cyrillic: 'Ль ль', input: 'l' },
+            { latin: 'M m', cyrillic: 'М м', input: 'm' },
+            { latin: 'N n', cyrillic: 'Н н', input: 'n' },
+            { latin: 'P p', cyrillic: 'П п', input: 'p' },
+            { latin: 'R r', cyrillic: 'Р р', input: 'r' },
+            { latin: 'S s', cyrillic: 'С с', input: 's' },
+            { latin: 'T t', cyrillic: 'Т т', input: 't' },
+            { latin: 'V v', cyrillic: 'Ѵ ѵ', input: 'v' },
+            { latin: 'W w', cyrillic: 'В в', input: 'w' },
+            { latin: 'X x', cyrillic: 'Х х', input: 'x' },
+            { latin: 'Z z', cyrillic: 'З з', input: 'z' },
+
+            // Compound / Special Consonants (Digraphs / Diacritics)
+            { latin: 'Ch ch / Č č', cyrillic: 'Ч ч', input: 'ch' },
+            { latin: 'Ð ð / Dh dh', cyrillic: 'Ҙ ҙ', input: 'dh' }, // Updated label
+            { latin: 'Dz dz', cyrillic: 'Ӡ ӡ', input: 'dz' },
+            { latin: 'Ǥ ǥ / gh', cyrillic: 'Ғ ғ', input: 'gh' },
+            { latin: 'Ħ ħ / h', cyrillic: 'Һ һ', input: 'h' },
+            { latin: 'Ƕ ƕ / hw', cyrillic: 'ꚕ ꚕ', input: 'hw' },
+            { latin: 'Ʒ ʒ / jzh', cyrillic: 'Џ џ', input: 'jzh' },
+            { latin: 'Ꝇ ꝇ / lh', cyrillic: 'Л л', input: 'lh' },
+            { latin: 'Ꞑ ꞑ / ng', cyrillic: 'Ҥ ҥ', input: 'ng' },
+            { latin: 'Ꞥ ꞥ / ny', cyrillic: 'Нь нь', input: 'ny' },
+            { latin: 'Š š / sh', cyrillic: 'Ш ш', input: 'sh' },
+            { latin: 'Þ þ / th', cyrillic: 'Ҫ ҫ', input: 'th' },
+            { latin: 'Ž ž / zh', cyrillic: 'Ж ж', input: 'zh' },
+            { latin: 'ß (ss)', cyrillic: 'СС сс', input: 'ß' },
+        ];
+
+
         // Populate the key list when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             const keyList = document.getElementById('conversionKeyList');
             
-            // Re-order and structure for display
-            const orderedKeys = [
-                { latin: 'A a', cyrillic: 'А а', input: 'a' },
-                { latin: 'Ā ā', cyrillic: 'АА аа', input: 'aa' },
-                { latin: 'B b', cyrillic: 'Б б', input: 'b' },
-                { latin: 'C c', cyrillic: 'Ц ц', input: 'c' },
-                { latin: 'Č č', cyrillic: 'Ч ч', input: 'ch' },
-                { latin: 'D d', cyrillic: 'Д д', input: 'd' },
-                { latin: 'Ð ð', cyrillic: 'Ҙ ҙ', input: 'dh' },
-                { latin: 'Dz dz', cyrillic: 'Ӡ ӡ', input: 'dz' },
-                { latin: 'E e', cyrillic: 'Е е', input: 'e' },
-                { latin: 'Ē ē', cyrillic: 'ЕЕ ее', input: 'ee' },
-                { latin: 'F f', cyrillic: 'Ф ф', input: 'f' },
-                { latin: 'G g', cyrillic: 'Г г', input: 'g' },
-                { latin: 'Ǥ ǥ', cyrillic: 'Ғ ғ', input: 'gh' },
-                { latin: 'Ħ ħ', cyrillic: 'Һ һ', input: 'h' },
-                { latin: 'I i', cyrillic: 'И и', input: 'i' },
-                { latin: 'Ī ī', cyrillic: 'ИИ ии', input: 'ii' },
-                { latin: 'J j', cyrillic: 'Й й', input: 'j' },
-                { latin: 'K k', cyrillic: 'К к', input: 'k' },
-                { latin: 'L l', cyrillic: 'Ль ль', input: 'l' },
-                { latin: 'Ꝇ ꝇ', cyrillic: 'Л л', input: 'lh' },
-                { latin: 'Ƕ ƕ', cyrillic: 'ꚕ ꚕ', input: 'hw' },
-                { latin: 'M m', cyrillic: 'М м', input: 'm' },
-                { latin: 'N n', cyrillic: 'Н н', input: 'n' },
-                { latin: 'Ꞑ ꞑ', cyrillic: 'Ҥ ҥ', input: 'ng' },
-                { latin: 'Ꞥ ꞥ', cyrillic: 'Нь нь', input: 'ny' },
-                { latin: 'O o', cyrillic: 'О о', input: 'o' },
-                { latin: 'Ō ō', cyrillic: 'Оо оо', input: 'oo' },
-                { latin: 'Ö ö', cyrillic: 'Ө ө', input: 'oe' },
-                { latin: 'P p', cyrillic: 'П п', input: 'p' },
-                { latin: 'R r', cyrillic: 'Р р', input: 'r' },
-                { latin: 'S s', cyrillic: 'С с', input: 's' },
-                { latin: 'Š š', cyrillic: 'Ш ш', input: 'sh' },
-                { latin: 'T t', cyrillic: 'Т т', input: 't' },
-                { latin: 'Þ þ', cyrillic: 'Ҫ ҫ', input: 'th' },
-                { latin: 'U u', cyrillic: 'У у', input: 'u' },
-                { latin: 'Ū ū', cyrillic: 'Уу уу', input: 'uu' },
-                { latin: 'Ü ü', cyrillic: 'Ӳ ӳ', input: 'ue' },
-                { latin: 'Ǖ ǖ', cyrillic: 'ӲӲ ӳӳ', input: 'uue' },
-                { latin: 'V v', cyrillic: 'Ѵ ѵ', input: 'v' },
-                { latin: 'X x', cyrillic: 'Х х', input: 'x' },
-                { latin: 'Y y', cyrillic: 'Ы ы', input: 'y' },
-                { latin: 'Z z', cyrillic: 'З з', input: 'z' },
-                { latin: 'Ž ž', cyrillic: 'Ж ж', input: 'zh' },
-                { latin: 'Ʒ ʒ', cyrillic: 'Џ џ', input: 'jzh' },
-                { latin: 'Ә ə', cyrillic: 'Ъ ъ', input: 'ax' },
-                { latin: 'W w', cyrillic: 'В в', input: 'w' },
-                { latin: 'ɛ (/eh/)', cyrillic: 'Э э', input: 'eh' },
-                { latin: 'ɔ (/aw/)', cyrillic: 'Ѡ ѡ', input: 'aw' },
-                { latin: 'TS ts', cyrillic: 'Ц ц', input: 'ts' },
-                { latin: 'TZ tz', cyrillic: 'Ц ц', input: 'tz' },
-                { latin: 'Ä ä', cyrillic: 'Э э', input: 'ä' },
-                { latin: 'Ö ö', cyrillic: 'Ө ө', input: 'ö' },
-                { latin: 'Ü ü', cyrillic: 'Ӱ ӱ', input: 'ü' },
-                { latin: 'Ǖ ǖ', cyrillic: 'Ӱ ӱ', input: 'ǖ' },
-                { latin: 'Ð ð', cyrillic: 'Ҙ ҙ', input: 'ð' },
-                { latin: 'Þ þ', cyrillic: 'Ҫ ҫ', input: 'þ' },
-                { latin: 'Ǥ ǥ', cyrillic: 'Ғ ғ', input: 'ǥ' },
-                { latin: 'Ꝇ ꝇ', cyrillic: 'Л л', input: 'ꝇ' },
-                { latin: 'Ƕ ƕ', cyrillic: 'ꚕ ꚕ', input: 'ƕ' },
-                { latin: 'Å å', cyrillic: 'Ѡ ѡ', input: 'å' },
-                { latin: 'Š š', cyrillic: 'Ш ш', input: 'š' },
-                { latin: 'Ž ž', cyrillic: 'Ж ж', input: 'ž' },
-                { latin: 'Ꞑ ꞑ', cyrillic: 'Ҥ ҥ', input: 'ꞑ' },
-                { latin: 'Ꞥ ꞥ', cyrillic: 'Нь нь', input: 'ꞥ' },
-                { latin: 'Ә ə', cyrillic: 'Ъ ъ', input: 'ə' },
-                { latin: 'Č č', cyrillic: 'Ч ч', input: 'č' },
-                { latin: 'Ā ā', cyrillic: 'АА аа', input: 'ā' },
-                { latin: 'Ē ē', cyrillic: 'ЕЕ ее', input: 'ē' },
-                { latin: 'Ī ī', cyrillic: 'ИИ ии', input: 'ī' },
-                { latin: 'Ū ū', cyrillic: 'Уу уу', input: 'ū' },
-                { latin: 'Ħ ħ', cyrillic: 'Һ һ', input: 'ħ' },
-                { latin: 'ß', cyrillic: 'СС сс', input: 'ß' },
-            ];
-
             const renderKey = (label, input, output, isSpecial = false) => {
                 const div = document.createElement('div');
                 div.className = 'key-pair';
+                // Mark special inputs (digraphs/diacritics/compounds) with green text
                 const inputClass = isSpecial ? 'text-green-400' : 'text-primary-blue';
+                
+                // For combined entries, use the primary input (e.g., 'c') but show the others in the label
+                let inputDisplay = input;
+                if (input === 'c') inputDisplay = 'c / ts / tz';
+                
                 div.innerHTML = `
                     <span class="text-secondary-gray">${label}</span>
                     <div class="flex items-center space-x-4">
-                        <span class="font-mono ${inputClass} text-sm bg-gray-700 px-2 py-1 rounded">${input}</span>
+                        <span class="font-mono ${inputClass} text-sm bg-gray-700 px-2 py-1 rounded">${inputDisplay}</span>
                         <span class="font-bold text-lg text-yellow-300">${output}</span>
                     </div>
                 `;
                 keyList.appendChild(div);
             };
 
+            // 1. Guillemet Rule
             const quoteRule = document.createElement('div');
             quoteRule.className = 'key-pair bg-green-900/50 rounded-lg p-2 mt-4 mb-4 font-semibold border-green-700 border';
             quoteRule.innerHTML = `
@@ -276,27 +274,31 @@
             `;
             keyList.appendChild(quoteRule);
 
-            const specialHeader = document.createElement('div');
-            specialHeader.className = 'text-center text-primary-blue mt-4 mb-2 font-semibold';
-            specialHeader.textContent = 'Special Letters / Compounds';
-            keyList.appendChild(specialHeader);
+            // 2. VOWELS Header
+            const vowelHeader = document.createElement('div');
+            vowelHeader.className = 'text-center text-primary-blue mt-6 mb-2 font-semibold text-lg';
+            vowelHeader.textContent = 'Vowels (Short, Long, & Special)';
+            keyList.appendChild(vowelHeader);
 
-            const simpleHeader = document.createElement('div');
-            simpleHeader.className = 'text-center text-primary-blue mt-6 mb-2 font-semibold';
-            simpleHeader.textContent = 'Simple Letters / Long Vowels';
-            keyList.appendChild(simpleHeader);
-
-            orderedKeys.forEach(item => {
-                const cyrillicOutput = item.cyrillic;
-                
-                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `ts`, `tz`].includes(item.input);
-                
-                if (isSpecial) {
-                    renderKey(item.latin, item.input, cyrillicOutput, true);
-                } else if (!isSpecial) {
-                    renderKey(item.latin, item.input, cyrillicOutput);
-                }
+            // 3. VOWELS List
+            VOWEL_KEYS.forEach(item => {
+                const isSpecial = ['aa', 'ee', 'ii', 'oo', 'uu', 'eh', 'oe', 'ue', 'uue', 'aw', 'ax'].includes(item.input);
+                renderKey(item.latin, item.input, item.cyrillic, isSpecial);
             });
+
+            // 4. CONSONANTS Header
+            const consonantHeader = document.createElement('div');
+            consonantHeader.className = 'text-center text-primary-blue mt-6 mb-2 font-semibold text-lg';
+            consonantHeader.textContent = 'Consonants (Simple & Special)';
+            keyList.appendChild(consonantHeader);
+
+            // 5. CONSONANTS List
+            CONSONANT_KEYS.forEach(item => {
+                // Determine if it's a simple single-letter consonant or a compound/diacritic for coloring
+                const isSpecial = !['b', 'd', 'f', 'g', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'x', 'z'].includes(item.input);
+                renderKey(item.latin, item.input, item.cyrillic, isSpecial);
+            });
+
         });
     </script>
 </head>
