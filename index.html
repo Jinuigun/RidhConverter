@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рииҙмал/Rīðmal Latin Converter</title>
+    <title>Рииҙмал (Rīðmal Latin-to-Cyrillic Converter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -41,13 +41,9 @@
             }
         }
         const RĪÐMAL_MAP = new Map([
-            // ---special case cuz its weird
             ["uue", "ӱӱ"], // Ǖ ǖ
             
             //Digraphs/Trigraphs (Consonants and Long Vowels) ---
-            ["ts", "ц"]
-            ["tz", "ц"]
-            
             // Vowels
             ["aa", "аа"], ["ee", "ее"], ["ii", "ии"], ["oo", "оо"], ["uu", "уу"],
             
@@ -56,7 +52,7 @@
             ["th", "ҫ"],   // Þ þ
             ["gh", "ғ"],   // Ǥ ǥ
             ["hh", "һ"],   // Ħ ħ
-            ["hw", "ꚕ"],   // Ƕ ƕ or Hv hv
+            ["hw", "ꚕ"],   // Ƕ ƕ
             ["ch", "ч"],   // Č č
             ["dz", "ӡ"],   // Dz dz
             ["sh", "ш"],   // Š š
@@ -68,8 +64,8 @@
             ["lh", "ль"],   // Ꝇ
             ["ny", "нь"],   // Ꞥ)
             ["ax", "ъ"],   // Ә
-            ["eh", "э"], // ɛ
-            ["aw", "ѡ"], //ɔ
+            ["eh", "э"],
+            ["aw", "ѡ"],
 
             // ---Vowels
             ["a", "а"], ["e", "е"], ["i", "и"], ["o", "о"], ["u", "у"], ["y", "ы"],
@@ -80,10 +76,7 @@
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
-
-            // ---quote mearkers
-            ["oq", "«"], 
-            ["cq", "»"],
+            ["OQ", "«"], ["CQ", "»"]
         ]);
 
         function convertText() {
@@ -178,10 +171,9 @@
                 { latin: 'W w', cyrillic: 'В в', input: 'w' },
                 { latin: 'ɛ (/eh/)', cyrillic: 'Э э', input: 'eh' },
                 { latin: 'ɔ (/aw/)', cyrillic: 'Ѡ ѡ', input: 'aw' },
-                { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'oq' },
-                { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'cq' },
-                { latin: 'TZ', cyrillic: 'ц', input: 'tz' },
-                { latin: 'TS', cyrillic: 'ц', input: 'ts' },
+                { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'OQ' },
+                { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'CQ' },
+
             ];
 
             const renderKey = (label, input, output, isSpecial = false) => {
@@ -200,18 +192,18 @@
 
             const specialHeader = document.createElement('div');
             specialHeader.className = 'text-center text-primary-blue mt-4 mb-2 font-semibold';
-            specialHeader.textContent = 'd';
+            specialHeader.textContent = 'Special Letters / Compounds';
             keyList.appendChild(specialHeader);
 
             const simpleHeader = document.createElement('div');
             simpleHeader.className = 'text-center text-primary-blue mt-6 mb-2 font-semibold';
-            simpleHeader.textContent = 'z';
+            simpleHeader.textContent = 'Simple Letters / Long Vowels';
             keyList.appendChild(simpleHeader);
 
             orderedKeys.forEach(item => {
                 const cyrillicOutput = item.cyrillic;
                 
-                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`, `ts`, `tz`].includes(item.input);
+                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`].includes(item.input);
                 
                 if (isSpecial) {
                     renderKey(item.latin, item.input, cyrillicOutput, true);
@@ -229,7 +221,7 @@
             Rīðmal Latin-to-Cyrillic Transcriber (Version 2.0)
         </h1>
         <p class="text-secondary-gray mb-6">
-                       This transcriber uses the <span class="text-primary-blue font-semibold">ASCII inputs provided in the key</span> for all letters with diacritics (e.g., 'ch' for Č) to make typing easier.
+            This transcriber uses the <span class="text-primary-blue font-semibold">ASCII inputs provided in the key</span> for all letters with diacritics (e.g., 'ch' for Č) to make typing easier.
         </p>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -254,7 +246,7 @@
 
             <div class="lg:col-span-1 bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700">
                 <h2 class="text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">
-                    Conversion Key (Latin Characters in Rīðmal Cyrillic)
+                    Conversion Key (Latin Character to ASCII Input to Cyrillic)
                 </h2>
                 <div id="conversionKeyList" class="text-sm">
                 </div>
