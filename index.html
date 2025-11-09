@@ -76,7 +76,7 @@
             ["b", "б"], ["c", "ц"], ["d", "д"], ["f", "ф"], ["g", "г"], ["j", "й"],
             ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["p", "п"], ["r", "р"],
             ["s", "с"], ["t", "т"], ["v", "ѵ"], ["w", "в"], ["x", "х"], ["z", "з"], 
-            ["OQ", "«"], ["CQ", "»"]
+            ["oq", "«"], ["cq", "»"], ["tz", "ц"], ["ts", "ц"]
         ]);
 
         function convertText() {
@@ -171,8 +171,8 @@
                 { latin: 'W w', cyrillic: 'В в', input: 'w' },
                 { latin: 'ɛ (/eh/)', cyrillic: 'Э э', input: 'eh' },
                 { latin: 'ɔ (/aw/)', cyrillic: 'Ѡ ѡ', input: 'aw' },
-                { latin: 'Open-Quote (OQ)', cyrillic: '«', input: 'OQ' },
-                { latin: 'Close-Quote (CQ)', cyrillic: '»', input: 'CQ' },
+                { latin: 'Open-Quote (oq)', cyrillic: '«', input: 'oq' },
+                { latin: 'Close-Quote (cq)', cyrillic: '»', input: 'cq' },
 
             ];
 
@@ -203,7 +203,7 @@
             orderedKeys.forEach(item => {
                 const cyrillicOutput = item.cyrillic;
                 
-                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`].includes(item.input);
+                const isSpecial = ['lh', 'hw', 'ng', 'ny', 'dz', 'jzh', 'dh', 'th', 'gh', 'hh', 'ch', 'sh', 'zh', 'ax', 'eh', 'aw', 'uue', `cq`, `oq`, `ts`, `tz`].includes(item.input);
                 
                 if (isSpecial) {
                     renderKey(item.latin, item.input, cyrillicOutput, true);
@@ -240,7 +240,7 @@
                     class="w-full p-4 rounded-lg text-2xl bg-gray-900 text-yellow-300 border border-gray-700 cursor-not-allowed" style="font-family: 'Times New Roman', serif;"></textarea>
                 
                 <p class="mt-4 text-secondary-gray text-sm">
-                    *Note: Due to font restrictions, some rare Cyrillic characters (like ꚕ or Ѵ) may appear slightly inconsistent, but the encoding is correct.
+                    *Note: Due to font restrictions, some rare Cyrillic characters (example: ꚕ or Ѵ) may appear slightly inconsistent, but the encoding is correct.
                 </p>
             </div>
 
